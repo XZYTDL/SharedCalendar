@@ -1,0 +1,16 @@
+#app {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: var(--padding);
+    padding: var(--padding);
+}
+
+#app > div {
+    background-color: var(--bg-color);
+    border: var(--br-size) solid var(--br-color);
+    border-radius: var(--br-radius);
+    padding: var(--padding);
+    box-shadow: 0 4px 6px var(--shadow-color);
+
+    cursor: pointer;
+}
