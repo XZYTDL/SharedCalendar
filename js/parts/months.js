@@ -9,7 +9,7 @@ export function months() {
     cal.forEach((month, index) => {
         let monthElement = document.createElement('div');
         monthElement.setAttribute('data-item', 'month');
-        monthElement.setAttribute('data-month', index);
+        monthElement.setAttribute('data-month', index + 1);
 
         let monthName = document.createElement('h3');
         monthName.textContent = month.name;
