@@ -1,18 +1,15 @@
 import { cal } from '../_calendar.js';
 
 export function days(month) {
-    
-    let container = document.createElement('div');
+    const now = new Date();
+    const total = cal[month]?.days ?? 0;
 
-    for (let i = 1; i <= cal[month]?.days; i++) {
-        let dayElement = document.createElement('div');
-        dayElement.setAttribute('data-item', 'day');
-        dayElement.setAttribute('data-month', month);
-        dayElement.setAttribute('data-day', i);
+    return Array.from({ length: total }, (_, k) => {
+        const d = k + 1;
+        const isToday = month === now.getMonth() && d === now.getDate();
 
-        dayElement.textContent = i;
-        container.appendChild(dayElement);
-    }
-
-    return container.innerHTML;
+        return `<div data-item="day" data-month="${month}" data-day="${d}"${isToday ? ' class="current"' : ''}>`
+            + (isToday ? `<span>${d}</span>` : d)
+            + `</div>`;
+    }).join('');
 }

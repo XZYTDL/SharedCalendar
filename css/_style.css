@@ -1,23 +1,36 @@
+@import url('https://fonts.googleapis.com/css2?family=UnifrakturMaguntia&display=swap');
+
 :root {
     --bg-color: #111213;
     --txt-color: #f4f4f4;
 
     --shadow-color: rgba(0, 0, 0, 0.1);
-
+    
     --padding: 1rem;
-    --br-radius: 0.75rem;
-    --br-size: 1px;
+    --br-radius: .85rem;
+    --br-size: 2px;
     --br-color: #333;
+    
+    --accent: #00ffc8;
+    
+    --scale-factor: 0.03;
 }
 
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    
+    &::-webkit-scrollbar {
+        display: none;
+    }
+
+    scrollbar-width: none;
+    -ms-overflow-style: none;
 }
 
 body {
-    font-family: Arial, sans-serif;
+    font-family: Georgia, 'Times New Roman', Times, serif;
     color: var(--txt-color);
     background-color: var(--bg-color);
     line-height: 1.6;

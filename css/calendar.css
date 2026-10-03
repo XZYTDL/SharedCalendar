@@ -6,11 +6,113 @@
 }
 
 #app > div {
-    background-color: var(--bg-color);
-    border: var(--br-size) solid var(--br-color);
+    --clr: var(--br-color);
+
+    background-color: oklch(from var(--clr) l c h / .1);
+    border: var(--br-size) solid var(--clr);
     border-radius: var(--br-radius);
     padding: var(--padding);
     box-shadow: 0 4px 6px var(--shadow-color);
 
     cursor: pointer;
+
+    user-select: none;
+    transition: 0.1s ease-out;
+}
+
+#app:not(:has(.chosen)) > div:hover {
+    scale: calc(1 + var(--scale-factor));
+    border-radius: calc(var(--br-radius) * 1.5);
+}
+
+#app:not(:has(.chosen)) > div:active {
+    scale: calc(1 - var(--scale-factor));
+}
+
+.days-container {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 0.5rem;
+    margin-top: var(--padding);
+}
+
+.days-container > div {
+    display: grid;
+    place-items: center;
+
+    background-color: oklch(from var(--clr) l c h / .15);
+    border: var(--br-size) solid var(--br-color);
+    border-color: var(--clr);
+    border-radius: calc(var(--br-radius) * 0.75);
+
+    aspect-ratio: 1 / 1;
+
+    transition: 0.1s ease-out;
+    cursor: pointer;
+    pointer-events: none;
+}
+
+.days-container > div:hover {
+    --clr: var(--txt-color) !important;
+    /* border-radius: calc(var(--br-radius) * 1.5); */
+    /* border-color: var(--txt-color); */
+}
+
+.days-container > div:active {
+    --clr: var(--txt-color) !important;
+    border-radius: calc(var(--br-radius) * 1.5);
+}
+
+.days-container .current {
+    rotate: 45deg;
+
+    width: calc(100% - var(--padding) * .4);
+    height: calc(100% - var(--padding) * .4);
+
+    translate: calc(var(--padding) * .2) calc(var(--padding) * .2);
+}
+
+.days-container .current span {
+    rotate: -45deg;
+    font-weight: 900;
+}
+
+.current {
+    --clr: oklch(from var(--accent) l c h / .5) !important;
+    background-color: oklch(from var(--clr) l c h / .1) !important;
+}
+
+.chosen {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    height: fit-content;
+    width: min(calc(100% - var(--padding) * 2), calc(50vh * (5 / 4)));
+    
+    cursor: default !important;
+    z-index: 999;
+}
+
+/* .chosen::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+
+    background-color: oklch(from var(--clr) l c h / .1);
+    backdrop-filter: blur(.5rem);
+    z-index: -1;
+} */
+
+.chosen .days-container > div {
+    pointer-events: all;
+}
+
+#app:has(.chosen) > div:not(.chosen) {
+    opacity: 0;
+    pointer-events: none;
 }

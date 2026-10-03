@@ -1,23 +1,12 @@
 import { cal } from '../_calendar.js';
+import { days } from './days.js';
 
 export function months() {
+    const currentMonth = new Date().getMonth();
 
-    let container = document.createElement('div');
-
-    // container.innerHTML = cal.map((month) => `<div>${month.name}</div>`).join('');
-
-    cal.forEach((month, index) => {
-        let monthElement = document.createElement('div');
-        monthElement.setAttribute('data-item', 'month');
-        monthElement.setAttribute('data-month', index + 1);
-
-        let monthName = document.createElement('h3');
-        monthName.textContent = month.name;
-        
-        monthElement.appendChild(monthName);
-        container.appendChild(monthElement);
-    });
-
-    return container.innerHTML;
-    
+    return cal.map((m, i) => `
+        <div class="month${i === currentMonth ? ' current' : ''}" data-item="month" data-month="${i}">
+            <h3>${m.name}</h3>
+            <div class="days-container">${days(i)}</div>
+        </div>`).join('');
 }

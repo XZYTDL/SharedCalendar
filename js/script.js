@@ -6,23 +6,28 @@ const app = document.getElementById('app');
 const loginDiv = document.getElementById('login');
 const loginBtn = document.getElementById('login-btn');
 
-const YEAR = new Date().getFullYear();
+const DATE = new Date();
+
+const YEAR = DATE.getFullYear();
 const pad = n => String(n).padStart(2, '0');
 
 let loggedIn = false;
 
+
 async function navigate(m, d) {
     if (!loggedIn) return;
 
-    
     if (!m) { app.innerHTML = months(); return; } 
-    if (!d) { app.innerHTML = days(m); return; }
+    if (!d) { app.children[Number(m)].classList.add('chosen'); return; }
+    
+    m = Number(m);
     
     app.innerHTML = 'Loading...';
 
-    const day = `${YEAR}-${pad(m)}-${pad(d)}`;
+    const day = `${YEAR}-${pad(m + 1)}-${pad(d)}`;
+    console.log(day);
     try {
-        const rows = ( await loadMonth(YEAR, m - 1)).filter(r => r.day === day);
+        const rows = ( await loadMonth(YEAR, m)).filter(r => r.day === day);
         const urls = await getUrls(rows);
         app.innerHTML = drawings(rows, urls, day);
     } catch (error) {
@@ -46,8 +51,11 @@ onLogin(user => {
 });
 
 document.addEventListener('click', (e) => {
+    document.getElementsByClassName('chosen')[0]?.classList.remove('chosen');
+
     const target = e.target?.closest?.('[data-item]');
     if (!target) return;
+
 
     const m = target.getAttribute('data-month');
     const d = target.getAttribute('data-day');
