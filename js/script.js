@@ -1,7 +1,7 @@
 import { months } from './parts/months.js';
 import { drawings } from './parts/drawings.js';
 import { key } from './parts/days.js';
-import { loadYear, loadMonth, getUrls, onLogin, sb, logout, login } from './supabase.js';
+import { loadYear, loadMonth, getUrls, onLogin, sb, logout, login, upload, remove } from './supabase.js';
 
 const $ = id => document.getElementById(id);
 const app = $('app'), sheet = $('sheet');
@@ -10,6 +10,7 @@ const S = { y: new Date().getFullYear(), m: null };
 let counts = {};
 let monthRows = [];
 let urls = {};
+let openKey = null;
 
 function setView() {
     document.body.dataset.view = sheet.open ? 'day' : S.m !== null ? 'month' : 'months';
@@ -38,6 +39,8 @@ function go(change) {
 
 function openDay(d) {
     const day = key(S.y, S.m, d);
+    openKey = day;
+
 
     const title = new Date(S.y, S.m, d).toLocaleDateString('en-EN', { weekday: 'long', day: 'numeric', month: 'long' });
     sheet.innerHTML = drawings(title, S.y, monthRows.filter(r => r.day === day), urls);
@@ -58,6 +61,44 @@ document.addEventListener('click', e => {
     const mo = e.target.closest('.month');
     if (mo && !mo.classList.contains('open')) go(() => { sheet.close(); S.m = +mo.dataset.month - 1; });
 });
+
+sheet.addEventListener('close', setView);
+
+
+/* =======
+# UPLOAD # 
+======= */
+
+async function handleFiles(fileList) {
+    const room = 4 - monthRows.filter(r => r.day === openKey).length;
+    const files = [...fileList].filter(f => f.type.startsWith('image/')).slice(0, room);
+    if (!files.length) return;
+ 
+    const zone = sheet.querySelector('.dropzone');
+    const label = zone.querySelector('span');
+    zone.setAttribute('aria-disabled', 'true');
+    try {
+        for (const [i, file] of files.entries()) {
+            label.textContent = `Carico ${i + 1} di ${files.length}…`;
+            await upload(openKey, file);                               
+        }
+    } catch (err) {
+        alert(err.message);
+    }
+    const d = +openKey.slice(8);
+    await load(); render(); openDay(d);
+}
+
+sheet.addEventListener('change', e => {
+    if (!e.target.matches('.dropzone input')) return;
+    handleFiles(e.target.files);
+    e.target.value = '';
+});
+ 
+
+for (const t of ['dragenter', 'dragover']) sheet.addEventListener(t, e => e.target.closest('.dropzone')?.classList.add('over'));
+for (const t of ['dragleave', 'drop']) sheet.addEventListener(t, e => e.target.closest('.dropzone')?.classList.remove('over'));
+for (const t of ['dragover', 'drop']) window.addEventListener(t, e => { if (!e.target.closest?.('.dropzone')) e.preventDefault(); });
 
 sheet.addEventListener('close', setView);
 
