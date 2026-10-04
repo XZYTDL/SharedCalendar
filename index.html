@@ -3,10 +3,33 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Shared Calendar</title>
+    <meta name="description" content="A shared calendar I use with my friends :D">
+
+    <meta name="robots" content="noindex, nofollow" >
+
+    <meta name="color-scheme" content="dark light">
+    <meta name="theme-color" content="#f1f1ed" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#08080a" media="(prefers-color-scheme: dark)">
+
+    <link rel="icon" type="image/svg+xml" href="./assets/icon.svg">
+    <link rel="apple-touch-icon" href="./assets/apple-touch-icon.png">
+    <link rel="manifest" href="manifest.webmanifest">
+    <meta name="apple-mobile-web-app-title" content="Shared Calendar">
+
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Shared Calendar">
+    <meta property="og:description" content="A shared calendar I use with my friends :D">
+    <meta property="og:url" content="https://xzytdl.github.io/SharedCalendar/">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://yyqwpgyytzgdslrfiijc.supabase.co" crossorigin>
+
     <link rel="stylesheet" href="./css/_style.css">
     <link rel="stylesheet" href="./css/calendar.css">
-    <title>Document</title>
 </head>
 
 <body>
@@ -63,7 +86,7 @@
     <dialog class="viewer" id="viewer"></dialog>
     <dialog class="settings" id="settings"></dialog>
 
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.2"></script>
     <script src="./js/script.js" type="module"></script>
 </body>
 
