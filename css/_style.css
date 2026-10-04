@@ -1,26 +1,26 @@
 @import url('https://fonts.googleapis.com/css2?family=UnifrakturMaguntia&display=swap');
 
 :root {
-    --bg-color: #111213;
-    --txt-color: #f4f4f4;
-
-    --shadow-color: rgba(0, 0, 0, 0.1);
-    
-    --padding: 1rem;
-    --br-radius: .85rem;
-    --br-size: 2px;
-    --br-color: #333;
-    
-    --accent: #00ffc8;
-    
-    --scale-factor: 0.03;
+    color-scheme: dark light;
+    --bg: light-dark(#f1f1ed, #08080a);
+    --card: light-dark(#fff, #131316);
+    --ink: light-dark(#111110, #f4f4f1);
+    --mute: light-dark(#85857f, #74747a);
+    --line: light-dark(#e2e2dc, #232327);
+    --cell: light-dark(#ececE6, #1b1b1f);
+    --accent: light-dark(#2b2bff, #c8ff2e);
+    --on-accent: light-dark(#fff, #08080a);
+    --pad: clamp(.7rem, 2.2vw, 1.4rem);
+    --r: 28px;
+    --sans: "Geist", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --mono: "Geist Mono", ui-monospace, Menlo, monospace;
 }
 
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    
+
     &::-webkit-scrollbar {
         display: none;
     }
@@ -29,9 +29,30 @@
     -ms-overflow-style: none;
 }
 
-body {
-    font-family: Georgia, 'Times New Roman', Times, serif;
-    color: var(--txt-color);
-    background-color: var(--bg-color);
-    line-height: 1.6;
+[hidden] {
+    display: none !important;
 }
+
+:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+}
+
+body {
+    min-height: 100dvh;
+    font: 400 .95rem/1.4 var(--sans);
+    -webkit-font-smoothing: antialiased;
+    color: var(--ink);
+    background-color: var(--bg);
+    padding: var(--pad) var(--pad) calc(5.8rem + env(safe-area-inset-bottom));
+}
+
+button {
+    font: inherit;
+    color: inherit;
+    background: none;
+    border: 0;
+    cursor: pointer;
+}
+
+@media (min-width: 56rem) { body { padding: 5.6rem var(--pad) var(--pad); } }

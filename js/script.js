@@ -1,64 +1,93 @@
-import { loadMonth, getUrls, login, onLogin, logout } from './supabase.js';
-import { days, months, drawings } from './parts/_parts.js';
-import { cal } from './_calendar.js';
+import { months } from './parts/months.js';
+import { drawings } from './parts/drawings.js';
+import { key } from './parts/days.js';
+import { loadYear, loadMonth, getUrls, onLogin, sb, logout, login } from './supabase.js';
 
-const app = document.getElementById('app');
-const loginDiv = document.getElementById('login');
-const loginBtn = document.getElementById('login-btn');
+const $ = id => document.getElementById(id);
+const app = $('app'), sheet = $('sheet');
 
-const DATE = new Date();
+const S = { y: new Date().getFullYear(), m: null };
+let counts = {};
+let monthRows = [];
+let urls = {};
 
-const YEAR = DATE.getFullYear();
-const pad = n => String(n).padStart(2, '0');
-
-let loggedIn = false;
-
-
-async function navigate(m, d) {
-    if (!loggedIn) return;
-
-    if (!m) { app.innerHTML = months(); return; } 
-    if (!d) { app.children[Number(m)].classList.add('chosen'); return; }
-    
-    m = Number(m);
-    
-    app.innerHTML = 'Loading...';
-
-    const day = `${YEAR}-${pad(m + 1)}-${pad(d)}`;
-    console.log(day);
-    try {
-        const rows = ( await loadMonth(YEAR, m)).filter(r => r.day === day);
-        const urls = await getUrls(rows);
-        app.innerHTML = drawings(rows, urls, day);
-    } catch (error) {
-        console.error(error);
-        app.innerHTML = 'Error: ' + error.message;
-    }
+function setView() {
+    document.body.dataset.view = sheet.open ? 'day' : S.m !== null ? 'month' : 'months';
 }
 
-loginBtn.addEventListener('click', () => login());
+async function load() {
+    counts = await loadYear(S.y);
+    monthRows = S.m !== null ? await loadMonth(S.y, S.m) : [];
+    urls = await getUrls(monthRows);
+}
 
-onLogin(user => {
-    loggedIn = !!user;
+function render() {
+    const photos = {};
+    monthRows.forEach(r => (photos[r.day] ??= []).push(urls[r.path]));
+    $('yl').textContent = S.y;
+    app.innerHTML = months(S, counts, photos);
+    setView();
+}
 
-    loginDiv.hidden = loggedIn;
-    app.hidden = !loggedIn;
+function go(change) {
+    const run = async () => {
+        try { change(); await load(); render(); } catch (err) { alert(err.message); }
+    };
+    return document.startViewTransition ? document.startViewTransition(run) : run();
+}
 
-    if(!user) return;
+function openDay(d) {
+    const day = key(S.y, S.m, d);
 
-    const p = new URLSearchParams(window.location.search);
-    navigate(p.get('m'), p.get('d'));
+    const title = new Date(S.y, S.m, d).toLocaleDateString('en-EN', { weekday: 'long', day: 'numeric', month: 'long' });
+    sheet.innerHTML = drawings(title, S.y, monthRows.filter(r => r.day === day), urls);
+    sheet.show();
+    setView();
+    // TODO upload: sul <input type="file"> del pannello chiama uploadPhoto(day, file), poi go(() => {}) e riapri il giorno
+}
+
+document.addEventListener('click', e => {
+    const yr = e.target.closest('.yr');
+    if (yr) return go(() => { sheet.close(); S.y += +yr.dataset.step; S.m = null; });
+    if (e.target.closest('.close')) return sheet.close();
+    if (e.target.closest('.back')) return sheet.open ? sheet.close() : go(() => { S.m = null; });
+
+    const day = e.target.closest('.month.open [data-day]');
+    if (day) return openDay(+day.dataset.day);
+
+    const mo = e.target.closest('.month');
+    if (mo && !mo.classList.contains('open')) go(() => { sheet.close(); S.m = +mo.dataset.month - 1; });
 });
 
-document.addEventListener('click', (e) => {
-    document.getElementsByClassName('chosen')[0]?.classList.remove('chosen');
-
-    const target = e.target?.closest?.('[data-item]');
-    if (!target) return;
+sheet.addEventListener('close', setView);
 
 
-    const m = target.getAttribute('data-month');
-    const d = target.getAttribute('data-day');
+/* ======
+# LOGIN #
+====== */
 
-    navigate(m, d);
+$('login-btn').onclick = () => login();
+$('logout').onclick = () => logout();
+ 
+onLogin(async user => {
+    $('login').hidden = !!user;
+    app.hidden = !user;
+    document.querySelector('.nav').hidden = !user;
+    if (!user) return;
+
+    const pic = user.user_metadata.avatar_url || user.user_metadata.picture;
+    if (pic) {
+        const img = new Image();
+        img.referrerPolicy = 'no-referrer';
+        img.alt = '';
+        img.onload = () => $('avatar').replaceChildren(img);
+        img.src = pic;
+    }
+
+    const { data } = await sb.from('members').select('nickname').maybeSingle();
+    const name = data?.nickname || user.email.split('@')[0];
+    $('nick').textContent = name;
+    $('email').textContent = user.email;
+ 
+    try { await load(); render(); } catch (err) { alert(err.message); }
 });

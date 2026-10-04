@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,14 +8,61 @@
     <link rel="stylesheet" href="./css/calendar.css">
     <title>Document</title>
 </head>
+
 <body>
-    
-    <div id="login">
-        <button id="login-btn">Login</button>
+
+    <main id="app" hidden></main>
+
+    <div id="login" hidden>
+        <button id="login-btn">Accedi con Google</button>
     </div>
-    <div id="app"></div>
+
+    <nav class="nav">
+        <button class="back" aria-label="Back"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                stroke-linejoin="round" class="lucide lucide-arrow-left preview-icon">
+                <path d="m12 19-7-7 7-7" />
+                <path d="M19 12H5" />
+            </svg></button>
+        <div class="year">
+            <button class="yr" data-step="-1" aria-label="Previous Year"><svg xmlns="http://www.w3.org/2000/svg"
+                    width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-left preview-icon">
+                    <path d="m15 18-6-6 6-6" />
+                </svg></button>
+            <output id="yl"></output>
+            <button class="yr" data-step="1" aria-label="Next Year"><svg xmlns="http://www.w3.org/2000/svg" width="24"
+                    height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-right preview-icon">
+                    <path d="m9 18 6-6-6-6" />
+                </svg></button>
+        </div>
+        <button class="account" id="avatar" popovertarget="menu" aria-label="Settings"><img src="https://www.picsum.photos/200"
+                alt="Account Icon"></button>
+    </nav>
+
+    <div id="menu" class="menu" popover>
+        <p class="who"><span id="nick"></span><small id="email"></small></p>
+        <button class="row">Settings <span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                    stroke-linejoin="round" class="lucide lucide-settings preview-icon">
+                    <path
+                        d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915" />
+                    <circle cx="12" cy="12" r="3" />
+                </svg></span></button>
+        <button class="row" id="logout">Log Out <span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                    stroke-linejoin="round" class="lucide lucide-log-out preview-icon">
+                    <path d="m16 17 5-5-5-5" />
+                    <path d="M21 12H9" />
+                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                </svg></span></button>
+    </div>
+
+    <dialog class="sheet" id="sheet"></dialog>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="./js/script.js" type="module"></script>
 </body>
+
 </html>

@@ -87,4 +87,20 @@ async function remove(row) {
     if (rm.error) throw rm.error;
 }
 
-export { login, onLogin, logout, loadMonth, getUrls, upload, remove};
+async function loadYear(year) {
+  const counts = {};
+  for (let from = 0; ; from += 1000) {
+    const { data, error } = await sb
+      .from('entries')
+      .select('day')
+      .gte('day', year + '-01-01')
+      .lt('day', (year + 1) + '-01-01')
+      .order('day').order('id')
+      .range(from, from + 999);
+    if (error) throw error;
+    data.forEach(r => { counts[r.day] = (counts[r.day] || 0) + 1; });
+    if (data.length < 1000) return counts;
+  }
+}
+
+export { login, onLogin, logout, loadMonth, loadYear, getUrls, upload, remove, sb };
