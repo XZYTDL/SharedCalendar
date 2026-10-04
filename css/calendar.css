@@ -147,6 +147,138 @@ body[data-view="months"] .back {
 }
 
 
+/* =========
+# SETTINGS #
+========= */
+
+.settings {
+    width: min(30rem, calc(100vw - 1.5rem));
+    max-height: calc(100dvh - 2rem);
+    overflow: auto;
+    padding: 1.3rem;
+    margin: auto;
+    background: var(--card);
+    color: var(--ink);
+    border: 1px solid var(--line);
+    border-radius: var(--r);
+    box-shadow: 0 30px 80px #0006;
+    opacity: 0;
+    scale: .96;
+    /* translate: 0 12px; */
+    transition: opacity .25s, scale .25s, translate .25s, display .25s allow-discrete, overlay .25s allow-discrete;
+}
+
+.settings[open] {
+    opacity: 1;
+    scale: 1;
+    translate: 0;
+}
+
+@starting-style {
+    .settings[open] {
+        opacity: 0;
+        scale: .96;
+        translate: 0 12px;
+    }
+}
+
+.settings::backdrop {
+    background: #0006;
+    backdrop-filter: blur(6px);
+}
+
+.set {
+    display: grid;
+    gap: .6rem;
+    padding-block: 1rem;
+    border-top: 1px solid var(--line);
+}
+
+.set h3 {
+    font: 500 .72rem var(--mono);
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--mute);
+}
+
+.set small {
+    font: .72rem var(--mono);
+    color: var(--mute);
+}
+
+.set input:not([type="color"]) {
+    width: 100%;
+    padding: .8rem 1rem;
+    font: inherit;
+    color: inherit;
+    background: var(--cell);
+    border: 1.5px solid transparent;
+    border-radius: 16px;
+    transition: border-color .2s;
+}
+
+.set input:focus {
+    outline: 0;
+    border-color: var(--accent);
+}
+
+.opts {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: .5rem;
+}
+
+.opts button {
+    padding: .55rem 1rem;
+    border-radius: 999px;
+    background: var(--cell);
+    border: 1.5px solid transparent;
+    transition: .2s;
+}
+
+.opts button:hover {
+    border-color: var(--line);
+}
+
+.opts button[aria-pressed="true"] {
+    border-color: var(--accent);
+}
+
+.opts button span {
+    margin-left: .4rem;
+    font-size: .8rem;
+    color: var(--mute);
+}
+
+.opts .swatch {
+    width: 2.2rem;
+    aspect-ratio: 1;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: var(--c);
+}
+
+.opts .swatch[aria-pressed="true"] {
+    box-shadow: 0 0 0 2px var(--card), 0 0 0 4px var(--c);
+}
+
+.opts .custom {
+    position: relative;
+    cursor: pointer;
+    background: conic-gradient(#f33, #fc3, #3f6, #3cf, #63f, #f3c, #f33);
+}
+
+.opts .custom input {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+}
+
 /* =======
 # MONTHS #
 ======= */

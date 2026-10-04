@@ -43,7 +43,7 @@
 
     <div id="menu" class="menu" popover>
         <p class="who"><span id="nick"></span><small id="email"></small></p>
-        <button class="row">Settings <span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+        <button class="row" id="settings-btn">Settings <span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                     viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                     stroke-linejoin="round" class="lucide lucide-settings preview-icon">
                     <path
@@ -61,6 +61,7 @@
 
     <dialog class="sheet" id="sheet"></dialog>
     <dialog class="viewer" id="viewer"></dialog>
+    <dialog class="settings" id="settings"></dialog>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="./js/script.js" type="module"></script>

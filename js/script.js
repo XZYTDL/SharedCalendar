@@ -2,6 +2,7 @@ import { months } from './parts/months.js';
 import { drawings } from './parts/drawings.js';
 import { key } from './parts/days.js';
 import { loadYear, loadMonth, getUrls, onLogin, sb, logout, login, upload, remove } from './supabase.js';
+import { openSettings } from './settings.js';
 
 const $ = id => document.getElementById(id);
 const app = $('app'), sheet = $('sheet'), viewer = $('viewer');
@@ -13,6 +14,7 @@ let urls = {};
 let openKey = null;
 let viewerIdx = 0;
 let meEmail = '';
+let nickname = '';
 
 function setView() {
     document.body.dataset.view = sheet.open ? 'day' : S.m !== null ? 'month' : 'months';
@@ -159,7 +161,22 @@ sheet.addEventListener('close', setView);
 
 $('login-btn').onclick = () => login();
 $('logout').onclick = () => logout();
- 
+
+$('settings-btn').onclick = () => {
+    $('menu').hidePopover();
+    openSettings({
+        email: meEmail,
+        nickname,
+        onSaved: async n => {
+            nickname = n;
+            $('whoName').textContent = n;
+            if (!$('avatar').querySelector('img')) $('avatar').textContent = n[0].toUpperCase();
+            await load(); render();
+            if (sheet.open && openKey) openDay(+openKey.slice(8));
+        },
+    });
+};
+
 onLogin(async user => {
     $('login').hidden = !!user;
     app.hidden = !user;
@@ -178,6 +195,7 @@ onLogin(async user => {
 
     const { data } = await sb.from('members').select('nickname').maybeSingle();
     const name = data?.nickname || user.email.split('@')[0];
+    nickname = name;
     $('nick').textContent = name;
     $('email').textContent = user.email;
  
