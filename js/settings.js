@@ -23,6 +23,24 @@ function contrast(hex) {
     return (0.299 * r + 0.587 * g + 0.114 * b) > 150 ? '#08080a' : '#fff';
 }
 
+const iconLink = document.querySelector('link[rel="icon"]');
+const iconDefault = iconLink?.getAttribute('href');
+ 
+function setFavicon(color) {
+    if (!iconLink) return;
+    if (!color) { iconLink.type = 'image/svg+xml'; iconLink.href = iconDefault; return; }   // nessun colore scelto: icona originale
+    const c = document.createElement('canvas');
+    c.width = c.height = 64;
+    const g = c.getContext('2d');
+    g.fillStyle = '#0a0a0b'; g.beginPath(); g.roundRect(0, 0, 64, 64, 16); g.fill();
+    const dot = (x, y, r, fill, alpha = 1) => { g.globalAlpha = alpha; g.fillStyle = fill; g.beginPath(); g.arc(x, y, r, 0, 7); g.fill(); };
+    for (const [x, y] of [[18, 18], [32, 18], [46, 18], [18, 32], [46, 32], [18, 46], [32, 46]]) dot(x, y, 5, '#2a2a2f');
+    dot(32, 32, 6, color); dot(46, 46, 5, color, .55);
+    iconLink.type = 'image/png';
+    iconLink.href = c.toDataURL('image/png');
+}
+
+
 function loadFont(f) {
     if (!f.gf || document.getElementById('gf-' + f.name)) return;
     const l = document.createElement('link');
@@ -37,6 +55,7 @@ export function applyPrefs() {
     if (f?.css) { loadFont(f); root.style.setProperty('--sans', f.css); } else root.style.removeProperty('--sans');
     if (accent) { root.style.setProperty('--accent', accent); root.style.setProperty('--on-accent', contrast(accent)); }
     else { root.style.removeProperty('--accent'); root.style.removeProperty('--on-accent'); }
+    setFavicon(accent);
 }
 applyPrefs();
 

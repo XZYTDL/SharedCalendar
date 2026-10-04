@@ -373,7 +373,8 @@ body[data-view="months"] .back {
     min-width: 0;
     padding: 1.1rem 1.2rem 1.2rem;
     cursor: pointer;
-    background: var(--card);
+    background: oklch(from var(--card) l c h / .85);
+    backdrop-filter: blur(6px);
     border: 1px solid var(--line);
     border-radius: var(--r);
     transition: translate .25s, box-shadow .25s, border-color .25s;
@@ -437,7 +438,7 @@ body[data-view="months"] .back {
     font: 400 .62rem var(--mono);
     transition: .15s;
     color: color-mix(in oklab, var(--on-accent) calc(var(--n, 0) * 25%), var(--mute));
-    background: color-mix(in oklab, var(--accent) calc(var(--n, 0) * 25%), var(--cell));
+    background: oklch(from color-mix(in oklab, var(--accent) calc(var(--n, 0) * 25%), var(--cell)) l c h / .75);
 }
 
 .days-container>div:hover {
