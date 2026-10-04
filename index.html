@@ -3,12 +3,12 @@
 
 <head>
     <meta charset="UTF-8">
-    
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>Shared Calendar</title>
     <meta name="description" content="A shared calendar I use with my friends :D">
 
-    <meta name="robots" content="noindex, nofollow" >
+    <meta name="robots" content="noindex, nofollow">
 
     <meta name="color-scheme" content="dark light">
     <meta name="theme-color" content="#f1f1ed" media="(prefers-color-scheme: light)">
@@ -33,6 +33,14 @@
 </head>
 
 <body>
+    <noscript>
+        <div
+            style="position:fixed;inset:0;z-index:100;display:grid;place-content:center;gap:.6rem;padding:2rem;text-align:center;background:#08080a;color:#f4f4f1;font:1rem/1.5 system-ui,sans-serif">
+            <strong style="font-size:1.6rem;font-weight:300">Serve JavaScript</strong>
+            <span>Il calendario non funziona con JavaScript disattivato. Attivalo nelle impostazioni del browser e
+                ricarica la pagina.</span>
+        </div>
+    </noscript>
 
     <main id="app" hidden></main>
 
@@ -60,15 +68,15 @@
                     <path d="m9 18 6-6-6-6" />
                 </svg></button>
         </div>
-        <button class="account" id="avatar" popovertarget="menu" aria-label="Settings"><img src="https://www.picsum.photos/200"
-                alt="Account Icon"></button>
+        <button class="account" id="avatar" popovertarget="menu" aria-label="Settings"><img
+                src="https://www.picsum.photos/200" alt="Account Icon"></button>
     </nav>
 
     <div id="menu" class="menu" popover>
         <p class="who"><span id="nick"></span><small id="email"></small></p>
-        <button class="row" id="settings-btn">Settings <span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                    stroke-linejoin="round" class="lucide lucide-settings preview-icon">
+        <button class="row" id="settings-btn">Settings <span><svg xmlns="http://www.w3.org/2000/svg" width="24"
+                    height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-settings preview-icon">
                     <path
                         d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915" />
                     <circle cx="12" cy="12" r="3" />
