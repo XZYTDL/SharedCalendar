@@ -47,6 +47,19 @@ body {
     padding: var(--pad) var(--pad) calc(5.8rem + env(safe-area-inset-bottom));
 }
 
+body::before,
+#login::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    background:
+        radial-gradient(circle at 50% 50%, color-mix(in oklab, var(--accent) 22%, transparent), transparent 55%),
+        radial-gradient(circle, color-mix(in oklab, var(--ink) 20%, transparent) 1.5px, transparent 2px) 0 0 / 28px 28px;
+    -webkit-mask: radial-gradient(circle at 50% 50%, #000 15%, transparent 70%);
+    mask: radial-gradient(circle at 50% 50%, #000 15%, transparent 70%);
+}
+
 button {
     font: inherit;
     color: inherit;
