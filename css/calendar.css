@@ -654,6 +654,132 @@ body[data-view="months"] .back {
     pointer-events: none;
 }
 
+
+/* ========
+# VIEWERS #
+======== */
+
+.photo {
+    cursor: zoom-in;
+}
+
+.viewer {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    max-width: none;
+    max-height: none;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: color-mix(in oklab, #000 93%, transparent);
+    color: #fff;
+    place-items: center;
+    opacity: 0;
+    transition: opacity .25s, display .25s allow-discrete, overlay .25s allow-discrete;
+}
+
+.viewer[open] {
+    display: grid;
+    opacity: 1;
+}
+
+@starting-style {
+    .viewer[open] {
+        opacity: 0;
+    }
+}
+
+.viewer::backdrop {
+    background: none;
+}
+
+.viewer img {
+    max-width: min(100vw - 1.5rem, 90rem);
+    max-height: calc(100dvh - 8rem);
+    object-fit: contain;
+    border-radius: 18px;
+}
+
+.viewer button {
+    display: grid;
+    place-items: center;
+    color: #fff;
+    background: #ffffff1f;
+    backdrop-filter: blur(14px);
+    transition: background .2s;
+}
+
+.viewer button:hover {
+    background: #ffffff38;
+}
+
+.v-close,
+.v-nav {
+    position: fixed;
+    width: 2.9rem;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    font-size: 1.5rem;
+}
+
+.v-close {
+    top: max(1rem, env(safe-area-inset-top));
+    right: 1rem;
+}
+
+.v-nav {
+    top: 50%;
+    translate: 0 -50%;
+}
+
+.v-prev {
+    left: 1rem;
+}
+
+.v-next {
+    right: 1rem;
+}
+
+@media (hover: none) {
+    .v-nav {
+        display: none;
+    }
+}
+
+.v-bar {
+    position: fixed;
+    bottom: max(1rem, env(safe-area-inset-bottom));
+    left: 50%;
+    translate: -50% 0;
+    display: flex;
+    align-items: center;
+    gap: .6rem;
+    padding: .45rem 1.2rem;
+    border-radius: 999px;
+    background: #ffffff1f;
+    backdrop-filter: blur(14px);
+    font: .8rem var(--mono);
+    white-space: nowrap;
+}
+
+.v-bar:has(.v-del) {
+    padding-right: .45rem;
+}
+
+.viewer .v-del {
+    padding: .6rem 1.1rem;
+    border-radius: 999px;
+    background: #ff453a;
+    font: 500 .85rem var(--sans);
+}
+
+.viewer .v-del:hover {
+    background: #ff6a60;
+}
+
+
 /* ============
 # TRANSITIONS #
 ============ */

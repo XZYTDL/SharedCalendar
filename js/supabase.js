@@ -80,9 +80,10 @@ async function upload(day, file) {
 }
 
 async function remove(row) {
-    const del = await sb.from('entries').delete().eq('id', row.id);
+    const del = await sb.from('entries').delete().eq('id', row.id).select('id');
     if (del.error) throw del.error;
-
+    if (!del.data.length) throw new Error('You can only delete your own photos!');
+    
     const rm = await sb.storage.from(BUCKET).remove([row.path]);
     if (rm.error) throw rm.error;
 }
